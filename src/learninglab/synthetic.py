@@ -51,6 +51,7 @@ def _students(cfg: SyntheticLearningConfig, rng: np.random.Generator) -> pd.Data
         engagement = float(np.clip(rng.normal(0.62, 0.15), 0.1, 1.0))
         support_need = float(np.clip(1.0 - prior + rng.normal(0, 0.10), 0.05, 0.95))
         rows.append({
+            "student_index": index,
             "student_id": f"S-{index+1:04d}",
             "group": group,
             "prior_knowledge": round(prior, 3),
@@ -83,9 +84,9 @@ def _activity(cfg: SyntheticLearningConfig, students: pd.DataFrame, tasks: pd.Da
         trust = float(np.clip(0.42 + 0.25 * student.confidence, 0.05, 0.95))
         dependence = 0.05
         for session in range(1, cfg.sessions + 1):
-            domain = DOMAINS[(session + hash(student.student_id)) % len(DOMAINS)]
+            domain = DOMAINS[(session + int(student.student_index)) % len(DOMAINS)]
             available = tasks.loc[tasks["domain"] == domain].copy()
-            # adaptive mode picks closer difficulty; overhelpful tends to keep tasks too easy
+            # Adaptive mode picks closer difficulty; overhelpful tends to keep tasks too easy.
             if mode == "adaptive":
                 target = mastery + 0.12
             elif mode == "overhelpful":
