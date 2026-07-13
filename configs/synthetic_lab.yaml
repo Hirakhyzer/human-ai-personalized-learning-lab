@@ -1,0 +1,19 @@
+seed: 42
+output_dir: outputs
+synthetic:
+  students: 240
+  sessions: 8
+  domains: [math, programming, reading, science]
+  feedback_modes: [none, generic, adaptive, overhelpful]
+
+metrics:
+  learning_gain_threshold: 0.10
+  dependence_threshold: 0.55
+  hint_rate_threshold: 0.45
+  fairness_gap_warning: 0.08
+
+ethics:
+  real_student_data: false
+  teacher_review_required: true
+  high_stakes_decisions_allowed: false
+  synthetic_data_label: synthetic fictional learning experiment
